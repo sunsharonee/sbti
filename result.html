@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>검사 결과</title>
+    <link rel="stylesheet" href="/css/index_styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>검사 결과</h1>
+        <p id="result-text">결과를 불러오는 중...</p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("/data/responses.json")
+                .then(response => response.json())
+                .then(data => {
+                    // 점수 계산
+                    let scores = { P: 0, C: 0, B: 0, G: 0, I: 0, M: 0, E: 0, T: 0, S: 0, R: 0, A: 0, U: 0 };
+                    
+                    for (let key in data) {
+                        let type = key.replace("q", ""); // "q1" -> "1"
+                        let value = parseInt(data[key]);
+                        scores[type] = (scores[type] || 0) + value;
+                    }
+
+                    // 가장 높은 점수 유형 찾기
+                    let userType = Object.keys(scores).reduce((a, b) => (scores[a] > scores[b] ? a : b));
+
+                    document.getElementById("result-text").textContent = `당신의 공부 유형은: ${userType}`;
+                })
+                .catch(error => {
+                    console.error("결과 불러오기 실패:", error);
+                    document.getElementById("result-text").textContent = "결과를 불러오는 중 오류가 발생했습니다.";
+                });
+        });
+    </script>
+</body>
+</html>

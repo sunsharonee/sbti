@@ -1,0 +1,13 @@
+CREATE DATABASE study_mbti;
+USE study_mbti;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    score_json TEXT DEFAULT NULL,
+    user_type_1 VARCHAR(5) DEFAULT NULL,
+    user_type_2 VARCHAR(5) DEFAULT NULL,
+    user_type_3 VARCHAR(5) DEFAULT NULL,
+    user_type_4 VARCHAR(5) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
